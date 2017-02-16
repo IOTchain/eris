@@ -1659,8 +1659,7 @@ func TestPullBadName(t *testing.T) {
 
 func TestLogsSimple(t *testing.T) {
 	const (
-		//name = "ipfs"
-		name = "keys"
+		name = "ipfs"
 		tail = "100"
 	)
 
@@ -1679,9 +1678,6 @@ func TestLogsSimple(t *testing.T) {
 		t.Fatalf("expected service container created, got %v", err)
 	}
 
-	// XXX [zr] stopping the ipfs service then checking its logs can
-	// lead to an IPFS panic; this test fails if using keys rather than IPFS
-	// except if using the ErrorWriter instead
 	if err := DockerStop(srv.Service, srv.Operations, 5); err != nil {
 		t.Fatalf("expected service container to stop, got %v", err)
 	}
@@ -1690,7 +1686,6 @@ func TestLogsSimple(t *testing.T) {
 	bufErr := new(bytes.Buffer)
 
 	config.Global.Writer = buf
-	config.Global.ErrorWriter = bufErr
 
 	if err := DockerLogs(srv.Service, srv.Operations, false, tail); err != nil {
 		t.Fatalf("expected logs pulled, got %v", err)
@@ -1699,7 +1694,7 @@ func TestLogsSimple(t *testing.T) {
 	fmt.Printf("MARMOT: %s", buf.String())
 	fmt.Printf("MARMOT BAD: %s", bufErr.String())
 
-	if !strings.Contains(bufErr.String(), "Starting eris-keys") {
+	if !strings.Contains(buf.String(), "Starting eris-keys") {
 		t.Fatalf("expected certain log entries, got %q", bufErr.String())
 	}
 }
