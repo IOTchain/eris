@@ -882,7 +882,6 @@ func logsContainer(id string, follow bool, tail string) error {
 		Since:        0,
 		Timestamps:   false,
 		Tail:         tail,
-		RawTerminal:  true,
 	}
 
 	if err := util.DockerClient.Logs(opts); err != nil {
