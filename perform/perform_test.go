@@ -1682,7 +1682,6 @@ func TestLogsSimple(t *testing.T) {
 	}
 
 	buf := new(bytes.Buffer)
-	bufErr := new(bytes.Buffer)
 
 	config.Global.Writer = buf
 
